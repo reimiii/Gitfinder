@@ -1,0 +1,19 @@
+const GithubReducer = (state, action) => {
+  switch(action.type) {
+    case 'GET_USERS':
+      return {
+        ...state,
+        users: action.payload,
+        astolfo: false
+      }
+    case 'GET_ASTOLFO':
+      return {
+        ...state,
+        astolfo: true
+      }
+    default:
+      return state
+  }
+}
+
+export default GithubReducer

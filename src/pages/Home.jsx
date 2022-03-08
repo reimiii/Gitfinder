@@ -1,9 +1,9 @@
-import { UserResults } from '../components'
+import { UserResults, UserSearch } from '../components'
 
 function Home() {
   return (
     <>
-      {/* SEARCH COMPONENT */}
+      <UserSearch />
       <UserResults />
     </>
   )

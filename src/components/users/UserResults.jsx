@@ -1,27 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { Astolfo, UserItem } from '../index'
+import { GithubContext } from '../../context'
 
 function UserResults() {
-  const [ users, setUsers ] = useState([])
-  const [ astolfo, setAstolfo ] = useState(true)
+  const { users, astolfo } = useContext(GithubContext)
 
-
-  useEffect(() => {
-    fetchUsers()
-  }, [])
-
-  const fetchUsers = async () => {
-    const response = await fetch(`${process.env.REACT_APP_GITHUB_URL}/users`, {
-      headers: {
-        Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
-      },
-    })
-
-    const data = await response.json()
-    setUsers(data);
-    // console.log(data)
-    setAstolfo(false)
-  }
 
   if (!astolfo) {
     return (
