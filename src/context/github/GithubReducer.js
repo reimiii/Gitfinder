@@ -11,6 +11,11 @@ const GithubReducer = (state, action) => {
         ...state,
         astolfo: true
       }
+    case 'CLEAR_USERS':
+      return {
+        ...state,
+        users: [],
+      }
     default:
       return state
   }
