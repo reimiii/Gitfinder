@@ -1,9 +1,11 @@
+import { UserResults } from '../components'
 
 function Home() {
   return (
-    <div>
-      <h1 className='text-6xl'>Welcome</h1>
-    </div>
+    <>
+      {/* SEARCH COMPONENT */}
+      <UserResults />
+    </>
   )
 }
 
