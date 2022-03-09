@@ -9,9 +9,12 @@ const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN
 export const GithubProvider = ({ children }) => {
   const initialState = {
     users: [],
+    user: {},
+    repos: [],
     astolfo: false
   }
 
+  // Get search results from Github API
   const [state, dispatch] = useReducer(GithubReducer, initialState)
 
   const searchUsers = async (text) => {
@@ -36,6 +39,55 @@ export const GithubProvider = ({ children }) => {
     })
   }
 
+  // Get single user
+  const getUser = async (login) => {
+    setAstolfo()
+
+    const response = await fetch(`${GITHUB_URL}/users/${login}`, {
+      headers: {
+        Authorization: `token ${GITHUB_TOKEN}`,
+      },
+    })
+
+    if (response.status === 404) {
+      window.location = '/notfound'
+    } else {
+      const data = await response.json()
+
+      dispatch({
+        type: 'GET_USER',
+        payload: data,
+      })
+    }
+  }
+
+  // Get user repos
+  const getUserRepos = async (login) => {
+    setAstolfo()
+
+    const params = new URLSearchParams({
+      sort: 'created',
+      per_page: 10,
+    })
+
+    const response = await fetch(
+      `${GITHUB_URL}/users/${login}/repos?${params}`,
+      {
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+        },
+      }
+    )
+
+    const data = await response.json()
+
+    dispatch({
+      type: 'GET_REPOS',
+      payload: data,
+    })
+
+  }
+
   const clearUsers = () => dispatch({ type: 'CLEAR_USERS' })
   // wow
   const setAstolfo = () => dispatch({ type: 'GET_ASTOLFO' })
@@ -44,8 +96,12 @@ export const GithubProvider = ({ children }) => {
     <GithubContext.Provider value={{
       users: state.users,
       astolfo: state.astolfo,
+      user: state.user,
+      repos: state.repos,
       searchUsers,
-      clearUsers
+      clearUsers,
+      getUser,
+      getUserRepos,
     }}>
       {children}
     </GithubContext.Provider>
